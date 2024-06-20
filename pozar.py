@@ -55,11 +55,14 @@ def forest_fire_simulation(size, p, f, r, steps):
                 elif forest[i, j] == 2:
                     burned_forest[i, j] = 0
 
-        # Losowe wyładowanie pioruna
+        # Losowe wyładowanie pioruna na drzewie bez płonącego sąsiada
         for i in range(size):
             for j in range(size):
-                if forest[i, j] == 1 and np.random.random() < f:
-                    burned_forest[i, j] = 2
+                if forest[i, j] == 1:
+                    if (i == 0 or forest[i - 1, j] != 2) and (i == size - 1 or forest[i + 1, j] != 2) and (j == 0 or forest[i, j - 1] != 2) and (j == size - 1 or forest[i, j + 1] != 2):
+                        if np.random.random() < f:
+                            burned_forest[i, j] = 2
+
 
         # Nowe drzewo na pustym miejscu
         for i in range(size):
@@ -77,3 +80,6 @@ def forest_fire_simulation(size, p, f, r, steps):
 
     ani = FuncAnimation(fig, update, frames=steps, repeat=False, interval=20)
     plt.show()
+
+
+
